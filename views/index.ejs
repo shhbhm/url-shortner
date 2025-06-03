@@ -19,9 +19,44 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+        }
+        
+        .logout-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            color: white;
+        }
+        
         .container {
             max-width: 800px;
             margin-top: 50px;
+            margin-bottom: 50px;
         }
         
         .card {
@@ -30,6 +65,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            margin-bottom: 30px;
         }
         
         .card-header {
@@ -110,9 +146,72 @@
             color: var(--primary-color);
             margin-bottom: 10px;
         }
+
+        .url-list {
+            margin-top: 20px;
+        }
+
+        .url-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .url-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .url-item .original-url {
+            color: var(--secondary-color);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .url-item .short-url {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .url-item .copy-btn {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+
+        .view-all-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .view-all-btn:hover {
+            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-link"></i>URL Shortener
+            </a>
+            <div class="ms-auto">
+                <a href="/auth/logout" class="btn logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <div class="card">
             <div class="card-header text-center">
@@ -162,8 +261,43 @@
                         <p class="text-muted">Monitor your links</p>
                     </div>
                 </div>
+
+                <div class="text-center">
+                    <a href="/urls/all" class="btn view-all-btn">
+                        <i class="fas fa-list me-2"></i>View All URLs
+                    </a>
+                </div>
             </div>
         </div>
+
+        <% if (typeof urls !== 'undefined' && urls.length > 0) { %>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-list me-2"></i>Your URLs</h3>
+                </div>
+                <div class="card-body">
+                    <div class="url-list">
+                        <% urls.forEach(url => { %>
+                            <div class="url-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="original-url">
+                                            <i class="fas fa-link me-2"></i><%= url.originalUrl %>
+                                        </div>
+                                        <div class="short-url mt-2">
+                                            <i class="fas fa-cut me-2"></i><%= `http://localhost:8001/${url.shortUrl}` %>
+                                        </div>
+                                    </div>
+                                    <button class="btn copy-btn" onclick="copyUrl('<%= `http://localhost:8001/${url.shortUrl}` %>')">
+                                        <i class="fas fa-copy me-2"></i>Copy
+                                    </button>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        <% } %>
     </div>
 
     <script>
@@ -182,6 +316,20 @@
                 btn.innerHTML = originalText;
                 btn.style.background = '';
             }, 2000);
+        }
+
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = event.target.closest('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
         }
     </script>
 </body>

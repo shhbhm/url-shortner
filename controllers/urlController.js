@@ -1,29 +1,33 @@
-const Url = require('../models/url');
+const Url = require('../models/Url');
 const shortid = require('shortid');
 
 // Generate short URL
 exports.generateShortUrl = async (req, res) => {
     try {
         const { originalUrl } = req.body;
-        
-        // Check if URL already exists
-        let url = await Url.findOne({ originalUrl });
-        if (url) {
-            return res.render('index', { shortUrl: url.shortUrl });
-        }
-
-        // Generate short URL
         const shortUrl = shortid.generate();
-        url = new Url({
+        
+        const url = new Url({
             originalUrl,
-            shortUrl
+            shortUrl,
+            user: req.user._id
         });
-
+        
         await url.save();
-        res.render('index', { shortUrl });
+        
+        // Get all URLs for the user
+        const urls = await Url.find({ user: req.user._id }).sort({ createdAt: -1 });
+        
+        res.render('index', { 
+            shortUrl,
+            urls
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json('Server error');
+        console.error('Error generating short URL:', error);
+        res.status(500).render('index', { 
+            error: 'Error generating short URL',
+            urls: await Url.find({ user: req.user._id }).sort({ createdAt: -1 })
+        });
     }
 };
 
@@ -32,26 +36,29 @@ exports.redirectToOriginal = async (req, res) => {
     try {
         const url = await Url.findOne({ shortUrl: req.params.shortUrl });
         if (!url) {
-            return res.status(404).json('URL not found');
+            return res.status(404).render('error', { message: 'URL not found' });
         }
-
+        
         url.clicks++;
         await url.save();
         
         res.redirect(url.originalUrl);
     } catch (error) {
-        console.error(error);
-        res.status(500).json('Server error');
+        console.error('Error redirecting:', error);
+        res.status(500).render('error', { message: 'Server error' });
     }
 };
 
 // Get all URLs
 exports.getAllUrls = async (req, res) => {
     try {
-        const urls = await Url.find().sort({ createdAt: -1 });
-        res.render('urls', { urls });
+        const urls = await Url.find({ user: req.user._id }).sort({ createdAt: -1 });
+        res.render('index', { urls });
     } catch (error) {
-        console.error(error);
-        res.status(500).json('Server error');
+        console.error('Error getting URLs:', error);
+        res.status(500).render('index', { 
+            error: 'Error getting URLs',
+            urls: []
+        });
     }
 }; 
