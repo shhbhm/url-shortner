@@ -21,7 +21,6 @@ url-shortner/
 └── README.md         # Project documentation
 
 
-
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
