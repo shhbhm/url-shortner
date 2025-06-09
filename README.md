@@ -1,8 +1,8 @@
- # URL Shortener
+# URL Shortener
 
 A simple, lightweight URL shortening service built with Node.js, Express, and MongoDB. This project allows users to shorten long URLs into concise, shareable links and redirect to the original URLs using the shortened versions.
 
-## Features
+## ✨ Features
 
 - Shorten long URLs into compact, unique links.
 - Redirect users to the original URL using the shortened link.
@@ -11,6 +11,7 @@ A simple, lightweight URL shortening service built with Node.js, Express, and Mo
 - Basic click tracking for shortened URLs.
 
 ## 🗂️ Project Structure
+
 ```
 url-shortner/
 ├── models/           # MongoDB schema definitions
@@ -23,14 +24,14 @@ url-shortner/
 └── README.md         # Project documentation
 ```
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Frontend**: None (API-driven, can be integrated with any frontend)
+- **Backend**: Node.js, Express.js  
+- **Database**: MongoDB  
+- **Frontend**: None (API-driven, can be integrated with any frontend)  
 - **Environment**: Managed via `.env` file for configuration
 
-## Prerequisites
+## ✅ Prerequisites
 
 Before running the project, ensure you have the following installed:
 
@@ -38,8 +39,38 @@ Before running the project, ensure you have the following installed:
 - MongoDB (local or cloud instance, e.g., MongoDB Atlas)
 - npm (Node Package Manager)
 
-## Installation
+## 🚀 Installation
 
 ### Clone the Repository
+
+```bash
 git clone https://github.com/shhbhm/url-shortner.git
 cd url-shortner
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Set Up Environment Variables
+
+Create a `.env` file in the root directory and add the following:
+
+```env
+PORT=3000
+MONGODB_URI=your_mongodb_connection_string
+BASE_URL=http://localhost:3000
+```
+
+> Replace `your_mongodb_connection_string` with your MongoDB connection URI (e.g., `mongodb://localhost:27017/url-shortner` for local or a MongoDB Atlas URI).
+
+### Run the Application
+
+```bash
+npm start
+```
+
+The server will start on `http://localhost:3000` or the port specified in your `.env`.
+
