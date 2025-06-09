@@ -11,14 +11,15 @@ A simple, lightweight URL shortening service built with Node.js, Express, and Mo
 - Basic click tracking for shortened URLs.
 
 url-shortner/
-├── models/
-│   └── Url.js        # MongoDB schema for URLs
-├── routes/
-│   └── index.js      # API routes for shortening and redirecting
-├── .env              # Environment variables
-├── package.json      # Project dependencies and scripts
+├── models/           # MongoDB schema definitions
+│   └── Url.js
+├── routes/           # Route handlers for API endpoints
+│   └── index.js
+├── .env              # Environment variables file
+├── package.json      # Project metadata and dependencies
 ├── server.js         # Main application entry point
-└── README.md         # This file
+└── README.md         # Project documentation
+
 
 
 ## Tech Stack
