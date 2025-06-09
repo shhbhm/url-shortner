@@ -10,6 +10,8 @@ A simple, lightweight URL shortening service built with Node.js, Express, and Mo
 - MongoDB integration for persistent storage of URL mappings.
 - Basic click tracking for shortened URLs.
 
+## 🗂️ Project Structure
+```
 url-shortner/
 ├── models/           # MongoDB schema definitions
 │   └── Url.js
@@ -19,7 +21,7 @@ url-shortner/
 ├── package.json      # Project metadata and dependencies
 ├── server.js         # Main application entry point
 └── README.md         # Project documentation
-
+```
 
 ## Tech Stack
 
